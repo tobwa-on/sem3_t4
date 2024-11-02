@@ -6,7 +6,7 @@
 
 <script>
 // @ is an alias to /src
-import OrderList from '@/components/OrderList.vue'
+import OrderList from '@/components/old/OrderList.vue'
 
 export default {
 	name: 'OrderListView',

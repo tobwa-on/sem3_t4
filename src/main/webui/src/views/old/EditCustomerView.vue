@@ -6,7 +6,7 @@
 
 <script>
 // @ is an alias to /src
-import EditCustomer from '@/components/EditCustomer.vue'
+import EditCustomer from '@/components/old/EditCustomer.vue'
 
 export default {
 	name: 'EditCustomerView',

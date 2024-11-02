@@ -7,8 +7,8 @@
 
 <script>
 // @ is an alias to /src
-import ProductList from '@/components/ProductList.vue'
-import AddProduct from '@/components/AddProduct.vue'
+import ProductList from '@/components/old/ProductList.vue'
+import AddProduct from '@/components/old/AddProduct.vue'
 
 export default {
 	name: 'ProductListView',

@@ -6,7 +6,7 @@
 
 <script>
 // @ is an alias to /src
-import EditIndProd from '@/components/EditIndProd.vue'
+import EditIndProd from '@/components/old/EditIndProd.vue'
 
 export default {
 	name: 'EditIndProdView',
