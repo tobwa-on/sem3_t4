@@ -9,6 +9,7 @@ import { createVuetify } from 'vuetify';
 import 'vuetify/styles';
 
 import './scss/styles.scss'
+import "@mdi/font/css/materialdesignicons.css"
 import * as components from 'vuetify/components';
 import * as directives from 'vuetify/directives';
 
@@ -17,26 +18,8 @@ const vuetify = createVuetify({
 	directives,
 });
 
-const rest = axios.create({
-	baseURL: '/api',
-});
-
-rest.interceptors.request.use(
-	function(config) {
-		let token = localStorage.getItem("user");
-		if(token)
-		{
-			config.headers["Authorization"] = 'Bearer ' + token;
-		}
-		return config;
-	}
-);
-
 const app = createApp(App).use(router).use(vuetify);
 
 app.use(VueAxios, {axios});
-
-// define this.rest for using the properly configured axios instance
-app.config.globalProperties.rest = rest;
 
 app.mount('#vueapp');

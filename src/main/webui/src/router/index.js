@@ -1,15 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import MovieHomeView from "../views/MovieHomeView.vue";
-import AboutView from "../views/AboutView.vue";
 import LoginView from "../views/LoginView.vue";
-import AddCustomerView from "../views/AddCustomerView.vue";
-import EditIndProdView from "../views/EditIndProdView.vue";
-import AddOrderView from "../views/AddOrderView.vue";
-import OrderListView from "../views/OrderListView.vue";
-import AddProductView from "../views/AddProductView.vue";
-import ProductListView from "../views/ProductListView.vue";
-import EditCustomerView from "../views/EditCustomerView.vue";
-import CustomerListView from "../views/CustomerListView.vue";
+import AddCustomerView from "../views/old/AddCustomerView.vue";
+import EditIndProdView from "../views/old/EditIndProdView.vue";
+import AddOrderView from "../views/old/AddOrderView.vue";
+import OrderListView from "../views/old/OrderListView.vue";
+import AddProductView from "../views/old/AddProductView.vue";
+import ProductListView from "../views/old/ProductListView.vue";
+import EditCustomerView from "../views/old/EditCustomerView.vue";
+import CustomerListView from "../views/old/CustomerListView.vue";
+import FavouritesView from "@/views/FavouritesView.vue";
+import WatchlistView from "@/views/WatchlistView.vue";
 
 const routes = [
 	{
@@ -18,9 +19,14 @@ const routes = [
 		component: MovieHomeView
 	},
 	{
-		path: '/about',
-		name: 'about',
-		component: AboutView
+		path: '/favourites',
+		name: 'favourites',
+		component: FavouritesView
+	},
+	{
+		path: '/watchlist',
+		name: 'watchlist',
+		component: WatchlistView
 	},
 	{
 		path: '/login',

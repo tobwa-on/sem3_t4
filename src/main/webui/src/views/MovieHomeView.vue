@@ -1,75 +1,73 @@
 <template>
-  <v-app>
-    <v-container class="text-center">
-      <v-row>
-        <v-col>
-          <h1>Willkommen zur Film-Suche</h1>
-          <p>Finde Informationen über Filme, Serien und Schauspieler mit TMDB</p>
-        </v-col>
-      </v-row>
+  <v-container fluid>
+    <PopularMovies @showDetails="showMovieDetails" />
+    <SearchMovie @showDetails="showMovieDetails"/>
 
-      <!-- Suchfeld -->
-      <v-row>
-        <v-col>
-          <v-text-field
-              v-model="query"
-              label="Suche nach einem Film"
-              @keyup.enter="fetchMovies"
-              outlined
-          ></v-text-field>
-          <v-btn @click="fetchMovies" color="primary">Suche</v-btn>
-        </v-col>
-      </v-row>
+    <!-- Dialog für Filmdetails -->
+    <MovieDetailsDialog
+        :dialog="dialog"
+        :movieDetails="movieDetails"
+        :rating="rating"
+        :review="review"
+        :isFavorite="isFavorite"
+        :isSavedForLater="isSavedForLater"
+        @update:dialog="dialog = $event"
+        @toggleFavorite="toggleFavorite"
+        @toggleSaveForLater="toggleSaveForLater"
+        @saveRating="saveRating"
+    />
 
-      <!-- Ergebnisse -->
-      <v-row v-if="movies.length">
-        <v-col v-for="movie in movies" :key="movie.id" cols="12" md="4">
-          <v-card>
-            <v-img :src="'https://image.tmdb.org/t/p/w500/' + movie.poster_path"></v-img>
-            <v-card-title>{{ movie.title }}</v-card-title>
-            <v-card-subtitle>Bewertung: {{ movie.vote_average }}</v-card-subtitle>
-            <v-card-text>{{ movie.overview }}</v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-app>
+  </v-container>
 </template>
 
-<script>
-import axios from 'axios';
+<script setup>
+import { ref, onMounted, defineEmits  } from 'vue';
 
-export default {
-  data() {
-    return {
-      query: '',
-      movies: [],
-    };
-  },
-  methods: {
-    async fetchMovies() {
-      if (!this.query) return;
-      try {
-        const response = await axios.get(
-            `https://api.themoviedb.org/3/search/movie`,
-            {
-              params: {
-                api_key: 'YOUR_TMDB_API_KEY', // Ersetze durch deinen API-Schlüssel
-                query: this.query,
-              },
-            }
-        );
-        this.movies = response.data.results;
-      } catch (error) {
-        console.error("Fehler beim Abrufen der Filme:", error);
-      }
-    },
-  },
+import { getPopularMovies, getMovieDetails } from '@/services/tmdb';
+import SearchMovie from "@/components/SearchMovie.vue";
+import MovieDetailsDialog from "@/components/MovieDetailsDialog.vue";
+import PopularMovies from "@/components/PopularMovies.vue";
+
+const popularMovies = ref([]);
+const dialog = ref(false);
+const movieDetails = ref({});
+const rating = ref(0);
+const review = ref("");
+const isFavorite = ref(false);
+const isSavedForLater = ref(false);
+
+defineEmits(['showDetails']);
+
+const fetchPopularMovies = async () => {
+  try {
+    const response = await getPopularMovies();
+    popularMovies.value = response.data.results;
+  } catch (error) {
+    console.error("Fehler beim Abrufen der beliebten Filme:", error);
+  }
 };
-</script>
 
-<style scoped>
-.text-center {
-  text-align: center;
-}
-</style>
+const showMovieDetails = async (movieId) => {
+  try {
+    const response = await getMovieDetails(movieId);
+    movieDetails.value = response.data;
+    dialog.value = true;
+  } catch (error) {
+    console.error("Fehler beim Laden der Filmdetails:", error);
+  }
+};
+
+const toggleFavorite = () => {
+  isFavorite.value = !isFavorite.value;
+};
+
+const toggleSaveForLater = () => {
+  isSavedForLater.value = !isSavedForLater.value;
+};
+
+const saveRating = () => {
+  //speicherlogik
+};
+
+onMounted(fetchPopularMovies);
+</script>

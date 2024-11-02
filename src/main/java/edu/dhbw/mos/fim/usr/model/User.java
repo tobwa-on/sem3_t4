@@ -46,8 +46,8 @@ public class User
 		this.uid = uid;
 	}
 
-	public User()
-	{
+	public User() {
+
 	}
 
 	public long getId()
@@ -60,29 +60,9 @@ public class User
 		this.id = id;
 	}
 
-	public String getUid()
-	{
-		return uid;
-	}
-
-	public void setUid(final String uid)
-	{
-		this.uid = uid;
-	}
-
-	public String getPassword()
-	{
-		return password;
-	}
-
 	public void setPassword(final String password)
 	{
 		this.password = password;
-	}
-
-	public Set<Role> getRoles()
-	{
-		return roles;
 	}
 
 	public void setRoles(final Set<Role> roles)
@@ -101,22 +81,15 @@ public class User
 	}
 
 	@Override
-	public boolean equals(final Object obj)
-	{
+	public boolean equals(final Object obj) {
 		if (this == obj)
 			return true;
-		if (!(obj instanceof User))
-			return false;
-		final User other = (User) obj;
-		if (id != other.id)
-			return false;
-		if (uid == null)
-		{
-			if (other.uid != null)
-				return false;
+		if (!(obj instanceof User other)) return false;
+        if (id != other.id) return false;
+		if (uid == null) {
+			return other.uid == null;
 		}
-		else if (!uid.equals(other.uid))
-			return false;
-		return true;
+		else if (!uid.equals(other.uid)) return false;
+			return true;
 	}
 }
