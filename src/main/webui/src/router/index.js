@@ -9,7 +9,7 @@ import AddProductView from "../views/old/AddProductView.vue";
 import ProductListView from "../views/old/ProductListView.vue";
 import EditCustomerView from "../views/old/EditCustomerView.vue";
 import CustomerListView from "../views/old/CustomerListView.vue";
-import FavouritesView from "@/views/FavouritesView.vue";
+import FavoritesView from "@/views/FavoritesView.vue";
 import WatchlistView from "@/views/WatchlistView.vue";
 
 const routes = [
@@ -19,9 +19,9 @@ const routes = [
 		component: MovieHomeView
 	},
 	{
-		path: '/favourites',
-		name: 'favourites',
-		component: FavouritesView
+		path: '/favorites',
+		name: 'favorites',
+		component: FavoritesView
 	},
 	{
 		path: '/watchlist',

@@ -11,7 +11,7 @@
 
     <!-- Links -->
     <v-btn to="/">Home</v-btn>
-    <v-btn to="/favourites" v-if="Object.keys(user).length">Favoriten</v-btn>
+    <v-btn to="/favorites" v-if="Object.keys(user).length">Favoriten</v-btn>
     <v-btn to="/watchlist" v-if="Object.keys(user).length">Merkliste</v-btn>
 
     <!-- Dropdown für Kunden -->

@@ -9,10 +9,8 @@
         :movieDetails="movieDetails"
         :rating="rating"
         :review="review"
-        :isFavorite="isFavorite"
         :isSavedForLater="isSavedForLater"
         @update:dialog="dialog = $event"
-        @toggleFavorite="toggleFavorite"
         @toggleSaveForLater="toggleSaveForLater"
         @saveRating="saveRating"
     />
