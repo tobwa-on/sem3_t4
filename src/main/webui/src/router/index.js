@@ -21,17 +21,17 @@ const routes = [
 	{
 		path: '/favorites',
 		name: 'favorites',
-		component: FavoritesView
+		component: () => import(/* webpackChunkName: "favorites" */ '../views/FavoritesView.vue')
 	},
 	{
 		path: '/watchlist',
 		name: 'watchlist',
-		component: WatchlistView
+		component: () => import(/* webpackChunkName: "watchlist" */ '../views/WatchlistView.vue')
 	},
 	{
 		path: '/login',
 		name: 'login',
-		component: LoginView
+		component: () => import(/* webpackChunkName: "login" */ '../views/LoginView.vue')
 	},
 	{
 		path: '/addcustomer',
@@ -78,10 +78,6 @@ const routes = [
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
 	routes
-});
-
-router.onError((error) => {
-	console.error("Router Error:", error);
 });
 
 export default router

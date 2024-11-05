@@ -18,8 +18,27 @@ const vuetify = createVuetify({
 	directives,
 });
 
+const rest = axios.create({
+	baseURL: '/api',
+});
+
+rest.interceptors.request.use(
+	function(config) {
+		// automatically create Auth header
+		let token = localStorage.getItem("user");
+		if(token)
+		{
+			config.headers["Authorization"] = 'Bearer ' + token;
+		}
+		return config;
+	}
+);
+
 const app = createApp(App).use(router).use(vuetify);
 
 app.use(VueAxios, {axios});
+
+// define this.rest for using the properly configured axios instance
+app.config.globalProperties.rest = rest;
 
 app.mount('#vueapp');

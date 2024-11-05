@@ -11,8 +11,8 @@
 
     <!-- Links -->
     <v-btn to="/">Home</v-btn>
-    <v-btn to="/favorites" v-if="Object.keys(user).length">Favoriten</v-btn>
-    <v-btn to="/watchlist" v-if="Object.keys(user).length">Merkliste</v-btn>
+    <v-btn to="/favorites" v-if="user && Object.keys(user).length">Favoriten</v-btn>
+    <v-btn to="/watchlist" v-if="user && Object.keys(user).length">Merkliste</v-btn>
 
     <!-- Dropdown für Kunden -->
     <v-menu offset-y>
@@ -77,44 +77,22 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
-import VueJwtDecode from 'vue-jwt-decode';
+import userService from "@/services/userService.js";
 import { useRouter } from 'vue-router';
 
 const user = ref({});
 const router = useRouter();
-const searchQuery = ref('');
-
-async function decodeUserData() {
-  const token = localStorage.getItem("user");
-  if (token) {
-    try {
-      const decoded = VueJwtDecode.decode(token);
-      user.value = decoded;
-
-      if (Date.now() >= decoded.exp * 1000) {
-        localStorage.removeItem("user");
-        await router.push({ path: '/' });
-        window.location.reload();
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
-}
 
 function logOut() {
-  localStorage.removeItem("user");
-  router.push({ path: '/' });
-  window.location.reload();
-}
-
-function searchMovies() {
-  // Hier kommt die Suchlogik, z.B. ein API-Call mit searchQuery.value
-  console.log("Suche gestartet für:", searchQuery.value);
+  userService.logOut(router);
+  user.value = {}; // Setze user auf ein leeres Objekt
 }
 
 onMounted(() => {
-  decodeUserData();
+
+  userService.decodeUserData(); // Ruft die Funktion aus der UserService-Klasse auf
+  user.value = userService.getUser(); // Setzt das `user`-Objekt mit den Daten aus UserService
+
 });
 </script>
 

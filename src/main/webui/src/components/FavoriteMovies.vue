@@ -1,7 +1,6 @@
 <template>
   <v-container fluid>
-    <h2>Meine Favoriten</h2>
-    <v-container fluid>
+    <h2 class="text-center mb-2">Meine Favoriten</h2>
       <!-- Ergebnisse -->
       <v-row class="mt-4" dense align-content="start">
         <v-col
@@ -32,7 +31,6 @@
           </v-row>
         </v-col>
       </v-row>
-    </v-container>
   </v-container>
 </template>
 
@@ -40,13 +38,21 @@
 import { onMounted, ref } from 'vue';
 import { getImageUrl, getMovieDetails } from '@/services/tmdb';
 import { getFavouriteMovies } from "@/services/favoriteService.js";
+import UserService from "@/services/userService.js";
 
 const favouriteMovies = ref([]);
-const uid = 'admin'; // Beispielhafte User-ID
 
 // Funktion zum Abrufen der Filmdetails für alle Favoriten
 const fetchMovieDetails = async () => {
   try {
+    const user = UserService.getUser(); // User abrufen
+    const uid = user?.upn; // UID dynamisch aus User abrufen
+
+    if (!uid) {
+      console.error("Kein Benutzer angemeldet oder keine UID verfügbar.");
+      return;
+    }
+
     const favorites = await getFavouriteMovies(uid); // Ruft die Favoriten ab
     const movieDetailsPromises = favorites.map(favorite => getMovieDetails(favorite.movieId)); // Erstellt eine Liste von Versprechungen für die Filmdetails
     const movies = await Promise.all(movieDetailsPromises); // Holt alle Details parallel

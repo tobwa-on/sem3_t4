@@ -45,6 +45,7 @@
 import { ref, watch } from 'vue';
 import { getImageUrl } from '@/services/tmdb';
 import { isFavoriteMovie, removeFavorite, saveFavorite } from '@/services/favoriteService';
+import UserService from "@/services/userService.js";
 
 const props = defineProps({
   dialog: Boolean,
@@ -54,9 +55,9 @@ const props = defineProps({
   isSavedForLater: Boolean,
 });
 
-const uid = ref('admin'); // Beispielhafte User-ID, dynamisch ersetzen
 
 // Lokale Variable zur Anzeige des Favoritenstatus
+const uid = UserService.getUser().upn; // User abrufen
 let isFavorite = ref(false);
 
 // Funktion zum Speichern/Entfernen des Favoriten
@@ -64,10 +65,10 @@ const handleToggleFavorite = async () => {
   isFavorite.value = !isFavorite.value;
   try {
     if (isFavorite.value) {
-      await saveFavorite(uid.value, props.movieDetails.id);
+      await saveFavorite(uid, props.movieDetails.id);
       console.log("Film als Favorit gespeichert.");
     } else {
-      await removeFavorite(uid.value, props.movieDetails.id);
+      await removeFavorite(uid, props.movieDetails.id);
       console.log("Film aus Favoriten entfernt.");
     }
   } catch (error) {
@@ -79,7 +80,7 @@ const handleToggleFavorite = async () => {
 const checkFavoriteStatus = async () => {
   try {
     isFavorite.value = false;
-    isFavorite.value = await isFavoriteMovie(uid.value, props.movieDetails.id);
+    isFavorite.value = await isFavoriteMovie(uid, props.movieDetails.id);
   } catch (error) {
     console.error("Fehler beim Überprüfen des Favoritenstatus:", error);
   }
@@ -100,8 +101,8 @@ watch(
 
 // Dialog schließen
 const closeDialog = () => {
-  isFavorite.value = false; // Zurücksetzen bevor der Status überprüft wird
   emit('update:dialog', false);
+  isFavorite.value = false; // Zurücksetzen bevor der Status überprüft wird
 };
 
 const toggleSaveForLater = () => {
